@@ -7,25 +7,30 @@ def part_one():
     number_of_increases = 0
     for next_depth in measurements:
         if next_depth > depth:
-            number_of_increases = number_of_increases + 1
+            number_of_increases += 1
         depth = next_depth
-    print(f'Part One: {number_of_increases=}')
+
+    # same as a one liner:
+    nm = sum(m2 > m1 for m1, m2 in zip(measurements, measurements[1:]))
+
+    print(f'Part One: {number_of_increases=} {nm=}')
 
 
 def part_two():
     number_of_increases = 0
-    i: int = 0
     previous_three_sum = float('inf')
-    while i <= len(measurements)-3:  # three measurements
+    for i in range(0, len(measurements)-2):
         three_sum = sum(measurements[i:i+3])
         if three_sum > previous_three_sum:
-            number_of_increases = number_of_increases + 1
+            number_of_increases += 1
         previous_three_sum = three_sum
-        i = i + 1
+
+    # more elegant would be to leverage:
+    # a + b + c < b + c + d _if_ a < d
 
     print(f'Part Two: {number_of_increases=}')
 
 
 if __name__ == '__main__':
-    part_one()
-    part_two()
+    part_one()  # 1548
+    part_two()  # 1589
