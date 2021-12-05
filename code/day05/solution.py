@@ -28,10 +28,7 @@ line_segments = [
 assert len(line_segments) == 500
 
 
-def part_one() -> int:
-    """
-    Return the number of points where at least two lines overlap
-    """
+def _count_point_occurrence(include_diagonal: bool = False) -> defaultdict:
     point_counter = defaultdict(int)
     for line in line_segments:
         if line.start.x == line.end.x:  # vertical line
@@ -40,19 +37,46 @@ def part_one() -> int:
             for y in range(y_min, y_max + 1):  # add all line point, incl start+end
                 point_counter[(Point(line.start.x, y))] += 1
 
-        if line.start.y == line.end.y:  # horizontal line
+        elif line.start.y == line.end.y:  # horizontal line
             x_min = min(line.start.x, line.end.x)
             x_max = max(line.start.x, line.end.x)
             for x in range(x_min, x_max + 1):  # add all line point, incl start+end
                 point_counter[(Point(x, line.start.y))] += 1
 
+        else:
+            if include_diagonal:
+                x_direction = 1 if line.start.x < line.end.x else -1
+                y_direction = 1 if line.start.y < line.end.y else -1
+                x_point_range = range(
+                    line.start.x, line.end.x + x_direction, x_direction
+                )
+                y_point_range = range(
+                    line.start.y, line.end.y + y_direction, y_direction
+                )
+                for x, y in zip(x_point_range, y_point_range):
+                    point_counter[(Point(x, y))] += 1
+
+    return point_counter
+
+
+def part_one() -> int:
+    """
+    Return the number of points where at least two lines overlap,
+    only horizontal and vertical lines.
+    """
+    point_counter = _count_point_occurrence(include_diagonal=False)
     return sum(True for overlap in point_counter.values() if overlap >= 2)
 
 
 def part_two() -> int:
-    pass
+    """
+    Return the number of points where at least two lines overlap,
+    also consider diagonal lines.
+    """
+    point_counter = _count_point_occurrence(include_diagonal=True)
+    return sum(True for overlap in point_counter.values() if overlap >= 2)
 
 
 if __name__ == "__main__":
-    print(f"{part_one()=}   (sample: 5)")
-    print(f"{part_two()=}  ")
+    print(f"{part_one()=}   5306 (sample: 5)")
+    print(f"{part_two()=}  17787 (sample: 12")
