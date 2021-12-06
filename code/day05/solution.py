@@ -22,14 +22,14 @@ class Line(NamedTuple):
 # input format per line: "0,9 -> 5,9"
 regex = re.compile(r"(\d+),(\d+) -> (\d+),(\d+)")
 line_segments = [
-    Line.from_tuple(regex.match(line.strip()).groups())
+    Line.from_tuple(regex.match(line.strip()).groups())  # type: ignore
     for line in open("input").readlines()
 ]
 assert len(line_segments) == 500
 
 
 def _count_point_occurrence(include_diagonal: bool = False) -> defaultdict:
-    point_counter = defaultdict(int)
+    point_counter: defaultdict = defaultdict(int)
     for line in line_segments:
         if line.start.x == line.end.x:  # vertical line
             y_min = min(line.start.y, line.end.y)

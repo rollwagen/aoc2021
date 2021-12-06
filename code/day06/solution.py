@@ -5,7 +5,7 @@ fish_counter = [input.count(i) for i in range(0, 9)]
 # fish_count=[0, 1, 1, 2, 1, 0, 0, 0, 0]
 
 
-def part_one(days: int=80) -> int:
+def part_one(days: int = 80) -> int:
     """ """
     for _ in range(0, days):
         counter_zero_reproducers = fish_counter.pop(0)

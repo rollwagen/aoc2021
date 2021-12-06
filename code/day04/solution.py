@@ -29,7 +29,7 @@ _print(f"{boards=}")
 already_called_numbers = set()
 boards_already_won = set()
 first_winning_board_score = -1
-for current_draw in draw_numbers:
+for current_draw in draw_numbers:  # noqa: C901
 
     already_called_numbers.add(current_draw)
     first_winning_board = None
