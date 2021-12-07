@@ -5,7 +5,7 @@ from solution import part_one, part_two
 
 class Day07Test(unittest.TestCase):
     def test_part_one(self):
-        self.assertEqual(-1, part_one())
+        self.assertEqual(335330, part_one())
 
     def test_part_two(self):
-        self.assertEqual(-1, part_two())
+        self.assertEqual(92439766, part_two())
