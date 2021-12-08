@@ -8,4 +8,4 @@ class Day08Test(unittest.TestCase):
         self.assertEqual(543, part_one())
 
     def test_part_two(self):
-        self.assertEqual(-1, part_two())
+        self.assertEqual(994266, part_two())
