@@ -30,7 +30,7 @@ def part_one_and_two():
             low_points.append(point)
             risk_level_sum += height + 1
 
-    print(f"Part One: {risk_level_sum=}")  # ---------------------------------
+    print(f"Part One: {risk_level_sum}   answer: 594 (sample: 15)")  # --------
 
     def _get_neighbour_points(x: int, y: int) -> list:
         return [(x + dx, y + dy) for dx, dy in neighbors]
@@ -42,11 +42,9 @@ def part_one_and_two():
         queue = deque()
         queue.append(low_point)
 
-        visited = []
-        visited.append(low_point)
+        visited_points = [low_point]
 
-        basin_values = []
-        basin_values.append(grid.get(low_point))  # basin size includes low point
+        basin_values = [grid.get(low_point)]
 
         while queue:
             point = queue.pop()
@@ -55,12 +53,12 @@ def part_one_and_two():
                 if (
                     value_adjacent_point is None
                     or value_adjacent_point == 9
-                    or adjacent_point in visited
+                    or adjacent_point in visited_points
                 ):
-                    pass
+                    pass  # nothing to do
                 else:
                     basin_values.append(value_adjacent_point)
-                    visited.append(adjacent_point)
+                    visited_points.append(adjacent_point)
                     queue.append(adjacent_point)
 
         basins.append(basin_values)
@@ -68,7 +66,7 @@ def part_one_and_two():
     # three largest basins and multiply their sizes together
     basins.sort(key=len, reverse=True)
     basin_sum = len(basins[0]) * len(basins[1]) * len(basins[2])
-    print(f"Part Two: {basin_sum}  858494 (sample: 1134)")
+    print(f"Part Two: {basin_sum}   answer: 858494 (sample: 1134)")  # --------
 
 
 if __name__ == "__main__":
