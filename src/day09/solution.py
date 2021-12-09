@@ -52,7 +52,6 @@ def part_one_and_two():
             point = queue.pop()
             for adjacent_point in _get_neighbour_points(*point):
                 value_adjacent_point = grid.get(adjacent_point, None)
-                print(f"{point=} {value_adjacent_point=}")
                 if (
                     value_adjacent_point is None
                     or value_adjacent_point == 9
