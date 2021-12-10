@@ -19,9 +19,14 @@ class Day10Test(unittest.TestCase):
         corrupted_line = "[[<[([]))<([[{}[[()]]]"
         self.assertRaises(CorruptedError, parse_line, corrupted_line)
 
-    def test_parse_line_incomplete(self):
+    def test_parse_line_incomplete01(self):
+        #  Complete by adding }}]])})].
         incomplete_line = "[({(<(())[]>[[{[]{<()<>>"
-        self.assertRaises(IncompleteError, parse_line, incomplete_line)
+        with self.assertRaises(IncompleteError) as error:
+            parse_line(incomplete_line)
+            self.assertEqual(
+                error.missing_closing_chars, ["}", "}", "]", "]", ")", "}", "]"]
+            )
 
     """
     Further Corrupted examples:
