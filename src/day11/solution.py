@@ -1,4 +1,18 @@
-input = [line.strip() for line in open("input.sample").readlines()]
+octopus_matrix = []
+octopus_matrix = [
+    [int(value) for value in line.strip()] for line in open("input.sample").readlines()
+]
+before_any_steps = """11111
+19991
+19191
+19991
+11111
+"""
+octopus_matrix = [
+    [int(value) for value in line.strip()]
+    for line in before_any_steps.strip().split("\n")
+]
+print(f"{octopus_matrix=}")
 
 
 def part_one() -> int:

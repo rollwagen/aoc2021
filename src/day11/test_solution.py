@@ -6,6 +6,20 @@ import unittest
 class Day11Test(unittest.TestCase):
     pass
 
+    before_any_steps = """11111
+19991
+19191
+19991
+11111
+"""
+
+    after_step_1 = """34543
+40004
+50005
+40004
+34543
+"""
+
 
 """ Examples:
 
