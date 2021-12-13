@@ -1,69 +1,91 @@
 import pathlib
 import re
 
-# from typing import NamedTuple
-
 
 def parse(input_: str):
     dots_input, fold_input = input_.strip().split("\n\n")
     dots = [tuple(map(int, dot.split(","))) for dot in dots_input.split("\n")]
     # fold along y=7\nfold along x=5
+    folds = []
     regex = re.compile(r"fold\ along\ ([a-z])=(\d+)")
-    for line in fold_input.splitlines()[:2]:
+    for line in fold_input.splitlines():
         axis, value = regex.match(line).groups()  # type: ignore
         if axis == "y":
-            fold_y: int = int(value)
+            folds.append(("y", int(value)))
         else:
-            fold_x: int = int(value)
-    print(fold_x, fold_y)
-    return dots, (fold_x, fold_y)
+            folds.append(("x", int(value)))
+
+    return dots, folds
 
 
 def _print_paper(dots: list):
     x_width = max([d[0] for d in dots])
     y_height = max([d[1] for d in dots])
     for y in range(y_height + 1):
-        print("".join(["#" if (x, y) in dots else "." for x in range(x_width + 1)]))
+        BLOCK = chr(0x2588)
+        print("".join([BLOCK if (x, y) in dots else "." for x in range(x_width + 1)]))
 
 
 def part_one(data) -> int:
-    """
-    How many dots are visible after completing **just the first**
-    fold instruction on your transparent paper?
-    """
-
     dots, folds = data
 
-    # fold vertically i.e. "x"
-    x_fold = folds[0]
-    new_dots = []
-    for dot in dots:
-        x, y = dot
-        if x < x_fold:
-            new_dots.append((x_fold - (x - x_fold), y))
-        else:
-            new_dots.append((x, y))
+    first_fold = folds[0]
+    fold_direction, fold_value = first_fold
+    print(f"{first_fold=}")
 
-    print(f"after first fold {len(set(new_dots))=}")
-    return len(set(new_dots))
+    if fold_direction == "x":  # fold vertically i.e. "x"
+        new_dots = []
+        for dot in dots:
+            x, y = dot
+            if x > fold_value:
+                new_dots.append((fold_value - (x - fold_value), y))
+            else:
+                new_dots.append((x, y))
 
-    dots = new_dots
+    elif fold_direction == "y":  # fold vertically i.e. "y"
 
-    # fold horizontally i.e. "y"
-    y_fold = folds[1]
-    new_dots = []
-    for dot in dots:
-        x, y = dot
-        if y > y_fold:
-            new_dots.append((x, y_fold - abs(y - y_fold)))
-        else:
-            new_dots.append((x, y))
+        new_dots = []
+        for dot in dots:
+            x, y = dot
+            if y > fold_value:
+                new_dots.append((x, fold_value - abs(y - fold_value)))
+            else:
+                new_dots.append((x, y))
 
-    print(f"after second fold {len(set(new_dots))=}")
+    dots_after_first_fold = len(set(new_dots))
+    return dots_after_first_fold
 
 
 def part_two(data) -> int:
-    return 0
+    dots, folds = data
+
+    for fold in folds:
+        fold_direction, fold_value = fold
+
+        if fold_direction == "x":  # fold vertically i.e. "x"
+            new_dots = []
+            for dot in dots:
+                x, y = dot
+                if x > fold_value:
+                    folded_dot = (fold_value - (x - fold_value), y)
+                    # print(f'x-> {x=} {y=} {folded_dot=}')
+                    new_dots.append(folded_dot)
+                else:
+                    new_dots.append((x, y))
+
+        elif fold_direction == "y":  # fold vertically i.e. "y"
+            new_dots = []
+            for dot in dots:
+                x, y = dot
+                if y > fold_value:
+                    new_dots.append((x, fold_value - abs(y - fold_value)))
+                else:
+                    new_dots.append((x, y))
+
+        dots = new_dots
+
+    _print_paper(dots)
+    return len(set(dots))
 
 
 if __name__ == "__main__":
@@ -71,4 +93,4 @@ if __name__ == "__main__":
     input_ = pathlib.Path("input").read_text().strip()
     data = parse(input_)
     print(f"{part_one(data)=}  answer: 785 (sample: 17)")
-    print(f"{part_two(data)=}  answer  (sample: )")
+    print(f"{part_two(data)=}  answer: FJAHJGAH  (sample: -)")
