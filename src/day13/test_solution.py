@@ -27,6 +27,16 @@ def test_parse_sample(sample_input):
 def test_part_one_sample(sample_input):
     """After the first fold in sample, 17 dots are visible."""
     assert s.part_one(sample_input) == 17
+    paper_after_folding = """\
+            #####
+            #...#
+            #...#
+            #...#
+            #####
+            .....
+            .....
+    """
+    print(paper_after_folding)
 
 
 @pytest.mark.skip(reason="Not implemented")
